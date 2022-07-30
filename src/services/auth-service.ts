@@ -1,10 +1,11 @@
 import {CreateUserRequest, LoginRequest, TokenDetails} from "../global";
 import {PrismaClient} from '@prisma/client'
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken';
 
-const prisma = new PrismaClient()
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const prisma = new PrismaClient();
 const saltRounds = 10;
+const config = process.env;
 
 const registerUser = async (createUserRequest: CreateUserRequest): Promise<void> => {
     const hashedPassword = await bcrypt.hash(createUserRequest.password, saltRounds);
@@ -13,7 +14,8 @@ const registerUser = async (createUserRequest: CreateUserRequest): Promise<void>
         data: {
             firstName: createUserRequest.firstName,
             email: createUserRequest.email,
-            password: hashedPassword
+            password: hashedPassword,
+            lastName: createUserRequest.lastName
         }
     })
 }
@@ -37,11 +39,13 @@ const login = async (loginRequest: LoginRequest) => {
         return;
     }
 
-    const validate = await bcrypt.compare(loginRequest.password, user.password)
+    const userPasswordHash = user.password as string;
+
+    const validate = await bcrypt.compare(loginRequest.password, userPasswordHash)
 
     const tokenDetails: TokenDetails = {userId: user.id, email: user.email};
 
-    const token = await jwt.sign(tokenDetails, process.env.TOKEN_KEY, {
+    const token = await jwt.sign(tokenDetails, config.TOKEN_KEY as string, {
         expiresIn: "3h"
     })
 
