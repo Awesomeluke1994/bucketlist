@@ -7,7 +7,7 @@ import * as validator from "email-validator"
 const registerUser = async (req: TypedRequestBody<CreateUserRequest>, res: Response) => {
     const request = req.body
 
-    if (req.body.email && req.body.password && req.body.firstName && req.body.lastName) {
+    if (!request.email || !request.password || !request.firstName || !request.lastName) {
         return res.status(422).send("Request body is invalid")
     }
 
