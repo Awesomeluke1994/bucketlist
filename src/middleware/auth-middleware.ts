@@ -17,7 +17,7 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) => {
 
     try {
         const decoded = jwt.decode(token, process.env.TOKEN_KEY)
-        req.params['UserDetails'] = decoded.payload;
+        req.params['userDetails'] = decoded.payload;
     } catch (e) {
         return unauthorised(res)
     }
