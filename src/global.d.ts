@@ -2,7 +2,7 @@ import {Request} from "express";
 
 interface TypedRequestBody<T> extends Request {
     body: T,
-    tokenDetails: TokenDetails
+    tokenDetails?: TokenDetails
 }
 
 interface CreateUserRequest {

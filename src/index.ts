@@ -1,7 +1,8 @@
 import express from "express";
 import bodyParser from 'body-parser'
 import {userRouter} from "./routes/user-route";
-import {authRouter} from "./routes/auth-route";
+import authRouter from "./routes/auth-route";
+
 
 const app = express()
 
