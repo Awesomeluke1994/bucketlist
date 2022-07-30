@@ -1,7 +1,7 @@
-import {CreateUserRequest, LoginRequest, TypedRequestBody} from "../global";
 import {Response} from "express";
 import * as authService from "../services/auth-service";
 import * as validator from "email-validator"
+import {CreateUserRequest, LoginRequest, TypedRequestBody} from "../types/global";
 
 
 const registerUser = async (req: TypedRequestBody<CreateUserRequest>, res: Response) => {

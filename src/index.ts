@@ -2,12 +2,11 @@ import express from "express";
 import bodyParser from 'body-parser'
 import userRouter from "./routes/user-route";
 import authRouter from "./routes/auth-route";
+import * as swaggerUi from 'swagger-ui-express';
+import swaggerDocument from './swagger.json';
 
 
 const app = express()
-
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
 
 const port = 3000
 

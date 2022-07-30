@@ -1,7 +1,7 @@
-import {CreateUserRequest, LoginRequest, TokenDetails} from "../global";
 import {PrismaClient, User} from '@prisma/client'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken';
+import {CreateUserRequest, LoginRequest, TokenDetails} from "../types/global";
 
 const PRISMA = new PrismaClient();
 const SALT_ROUNDS = 10;

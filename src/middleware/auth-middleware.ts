@@ -1,9 +1,10 @@
-import {TypedRequestBody} from "../global";
-
-const jwt = require("jsonwebtoken")
+import jwt from 'jsonwebtoken'
 import {NextFunction, Response} from "express";
+import {TokenDetails, TypedRequestBody} from "../types/global";
 
-const verifyToken = (req: TypedRequestBody<any>, res: Response, next: NextFunction) => {
+const ENV_CONFIG = process.env;
+
+const verifyToken = (req: TypedRequestBody<unknown>, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization
     let token;
 
@@ -18,7 +19,10 @@ const verifyToken = (req: TypedRequestBody<any>, res: Response, next: NextFuncti
     }
 
     try {
-        const decoded = jwt.decode(token, process.env.TOKEN_KEY)
+        const decoded = jwt.verify(token, ENV_CONFIG.TOKEN_KEY as string) as TokenDetails
+        if(!decoded) {
+            return unauthorised(res);
+        }
         req.tokenDetails = {email: decoded.email, userId: decoded.userId};
     } catch (e) {
         return unauthorised(res)
