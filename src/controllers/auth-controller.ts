@@ -1,8 +1,6 @@
 import {CreateUserRequest, LoginRequest, TypedRequestBody} from "../global";
 import {Response} from "express";
-import {AuthService} from "../services/auth-service";
-
-const authService = new AuthService()
+import * as authService from "../services/auth-service";
 
 export class AuthController {
 
