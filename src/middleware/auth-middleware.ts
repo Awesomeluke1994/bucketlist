@@ -12,15 +12,20 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) => {
     if (authHeader.startsWith("Bearer ")) {
         token = authHeader.substring(7, authHeader.length);
     } else {
-        res.status(403).send("Unauthorised");
+        return unauthorised(res)
     }
 
     try {
-        jwt.decode(token, process.env.TOKEN_KEY)
+        const decoded = jwt.decode(token, process.env.TOKEN_KEY)
+        req.params['UserDetails'] = decoded.payload;
     } catch (e) {
-        res.status(401).send("Unauthorised")
+        return unauthorised(res)
     }
     return next();
+}
+
+const unauthorised = (res: Response) => {
+    res.status(401).send("Unauthorised")
 }
 
 export {
