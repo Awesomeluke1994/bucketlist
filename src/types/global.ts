@@ -21,3 +21,7 @@ export interface TokenDetails {
     email: string;
     userId: number;
 }
+
+export interface GetAllUsersResponse {
+    users: {firstName: string, lastName: string, email: string}[]
+}
