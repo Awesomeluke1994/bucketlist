@@ -1,3 +1,4 @@
+node_modules
 # Logs
 logs
 *.log
@@ -102,3 +103,7 @@ dist
 
 # TernJS port file
 .tern-port
+# Keep environment variables out of version control
+.env
+/.idea/vcs.xml
+/.idea
