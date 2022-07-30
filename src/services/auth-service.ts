@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 const saltRounds = 10;
 
 export class AuthService {
-    registerUser = async (createUserRequest: CreateUserRequest) => {
+    registerUser = async (createUserRequest: CreateUserRequest): Promise<void> => {
         const hashedPassword = await bcrypt.hash(createUserRequest.password, saltRounds);
         await prisma.user.create({
             data: {
