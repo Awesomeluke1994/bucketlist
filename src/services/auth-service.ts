@@ -1,4 +1,4 @@
-import {CreateUserRequest, LoginRequest} from "../global";
+import {CreateUserRequest, LoginRequest, TokenDetails} from "../global";
 import {PrismaClient} from '@prisma/client'
 
 const prisma = new PrismaClient()
@@ -25,20 +25,19 @@ export class AuthService {
             }
         })
 
-        if(!user) {
+        if (!user) {
             return;
         }
 
         const validate = await bcrypt.compare(loginRequest.password, user.password)
 
-        const token = await jwt.sign({
-            userId: user.id,
-            email: user.email
-        }, process.env.TOKEN_KEY, {
+        const tokenDetails: TokenDetails = {userId: user.id, email: user.email};
+
+        const token = await jwt.sign(tokenDetails, process.env.TOKEN_KEY, {
             expiresIn: "3h"
         })
 
-        if(validate) {
+        if (validate) {
             return {
                 token: token
             };

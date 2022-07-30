@@ -1,7 +1,8 @@
 import {Request} from "express";
 
 interface TypedRequestBody<T> extends Request {
-    body: T
+    body: T,
+    tokenDetails: TokenDetails
 }
 
 interface CreateUserRequest {
@@ -14,4 +15,9 @@ interface CreateUserRequest {
 interface LoginRequest {
     email: string;
     password: string;
+}
+
+interface TokenDetails {
+    email: string;
+    userId: number;
 }

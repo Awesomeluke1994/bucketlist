@@ -1,7 +1,9 @@
-const jwt = require("jsonwebtoken")
-import {NextFunction, Request, Response} from "express";
+import {TypedRequestBody} from "../global";
 
-const verifyToken = (req: Request, res: Response, next: NextFunction) => {
+const jwt = require("jsonwebtoken")
+import {NextFunction, Response} from "express";
+
+const verifyToken = (req: TypedRequestBody<any>, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization
     let token;
 
@@ -17,7 +19,7 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) => {
 
     try {
         const decoded = jwt.decode(token, process.env.TOKEN_KEY)
-        req.params['userDetails'] = decoded.payload;
+        req.tokenDetails = {email: decoded.email, userId: decoded.userId};
     } catch (e) {
         return unauthorised(res)
     }
