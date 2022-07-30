@@ -1,7 +1,7 @@
 import {verifyToken} from "../middleware/auth-middleware";
-
-const express = require('express');
+import express from "express"
 const userRouter = express.Router();
+
 import {getAll} from "../controllers/user-controller";
 
 userRouter.get('/getAllUsers', verifyToken, getAll)
