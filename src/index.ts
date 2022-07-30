@@ -1,6 +1,6 @@
 import express from "express";
 import bodyParser from 'body-parser'
-import {userRouter} from "./routes/user-route";
+import userRouter from "./routes/user-route";
 import authRouter from "./routes/auth-route";
 
 
