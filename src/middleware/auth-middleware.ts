@@ -5,7 +5,7 @@ import {TokenDetails, TypedRequestBody} from "../types/global";
 const ENV_CONFIG = process.env;
 
 const verifyToken = (req: TypedRequestBody<unknown>, res: Response, next: NextFunction) => {
-    const authHeader = req.headers.authorization
+    const authHeader = req.headers.authorization;
     let token;
 
     if (!authHeader) {
@@ -15,12 +15,12 @@ const verifyToken = (req: TypedRequestBody<unknown>, res: Response, next: NextFu
     if (authHeader.startsWith("Bearer ")) {
         token = authHeader.substring(7, authHeader.length);
     } else {
-        return unauthorised(res)
+        return unauthorised(res);
     }
 
     try {
-        const decoded = jwt.verify(token, ENV_CONFIG.TOKEN_KEY as string) as TokenDetails
-        if(!decoded) {
+        const decoded = jwt.verify(token, ENV_CONFIG.TOKEN_KEY as string) as TokenDetails;
+        if (!decoded) {
             return unauthorised(res);
         }
         req.tokenDetails = {email: decoded.email, userId: decoded.userId};
