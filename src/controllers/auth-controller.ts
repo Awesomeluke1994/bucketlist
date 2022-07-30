@@ -29,13 +29,17 @@ const registerUser = async (req: TypedRequestBody<CreateUserRequest>, res: Respo
 };
 
 const login = async (req: TypedRequestBody<LoginRequest>, res: Response) => {
-    const isASuccessfulLogin = await authService.login(req.body);
+    let isASuccessfulLogin;
+    try {
+        isASuccessfulLogin = await authService.login(req.body);
+    } catch (e) {
+        res.status(500).send("Unable to log user in")
+    }
 
     if (isASuccessfulLogin) {
         res.status(200).send(isASuccessfulLogin)
         return;
     }
-
     res.status(401).send("Unable to log user in")
 }
 
