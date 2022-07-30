@@ -1,5 +1,5 @@
 import {CreateUserRequest, LoginRequest, TokenDetails} from "../global";
-import {PrismaClient} from '@prisma/client'
+import {PrismaClient, User} from '@prisma/client'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken';
 
@@ -28,6 +28,14 @@ const userExistsByEmail = async (email: string): Promise<boolean> => {
     })
 }
 
+const createToken = (user: User) => {
+    const tokenDetails: TokenDetails = {userId: user.id, email: user.email};
+
+    return jwt.sign(tokenDetails, config.TOKEN_KEY as string, {
+        expiresIn: "3h"
+    });
+}
+
 const login = async (loginRequest: LoginRequest) => {
     const user = await prisma.user.findUnique({
         where: {
@@ -40,14 +48,15 @@ const login = async (loginRequest: LoginRequest) => {
     }
 
     const userPasswordHash = user.password as string;
+    let validate: boolean;
 
-    const validate = await bcrypt.compare(loginRequest.password, userPasswordHash)
+    try {
+        validate = await bcrypt.compare(loginRequest.password, userPasswordHash);
+    } catch (e) {
+        throw "Unable to login"
+    }
 
-    const tokenDetails: TokenDetails = {userId: user.id, email: user.email};
-
-    const token = await jwt.sign(tokenDetails, config.TOKEN_KEY as string, {
-        expiresIn: "3h"
-    })
+    const token = createToken(user);
 
     if (validate) {
         return {
